@@ -47,6 +47,4 @@ fvm flutter run -d chrome
 
 ## Evidencias del funcionamiento
 
-Vídeo de demostración de la app ([`assets/docs/demo.webm`](assets/docs/demo.webm)):
-
-<video src="assets/docs/demo.webm" controls muted playsinline width="100%" style="max-width: 720px;"></video>
+![Demo](assets/docs/demo.gif)
