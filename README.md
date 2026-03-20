@@ -12,7 +12,7 @@ Demo de **BTG Fondos**: app Flutter para explorar **fondos FPV/FIC**, consultar 
 Si usas FVM en la raíz del proyecto:
 
 ```bash
-fvm use 3.41.2   # ya definido en .fvm/fvm_config.json
+fvm use 3.41.2
 ```
 
 Sin FVM, instala una versión de Flutter compatible con Dart 3.11 (por ejemplo la **stable** actual que cumpla el SDK del `pubspec`).
@@ -44,3 +44,9 @@ fvm flutter run -d chrome
 - [Documentación Flutter](https://docs.flutter.dev/)
 - [Riverpod](https://riverpod.dev/)
 - [go_router](https://pub.dev/packages/go_router)
+
+## Evidencias del funcionamiento
+
+Vídeo de demostración de la app ([`assets/docs/demo.webm`](assets/docs/demo.webm)):
+
+<video src="assets/docs/demo.webm" controls muted playsinline width="100%" style="max-width: 720px;"></video>
