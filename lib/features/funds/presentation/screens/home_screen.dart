@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/core/utils/layout_breakpoints.dart';
+import 'package:flutter_application_1/features/funds/presentation/constants/fund_layout.dart';
+import 'package:flutter_application_1/features/funds/presentation/widgets/balance/balance_card.dart';
+import 'package:flutter_application_1/features/funds/presentation/widgets/common/fund_max_width_content.dart';
+import 'package:flutter_application_1/features/funds/presentation/widgets/funds/funds_list_section.dart';
+import 'package:flutter_application_1/features/funds/presentation/widgets/home/fund_home_header.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final isWide = width > 900;
+        final balanceInHeader = showBalanceInAppHeader(width);
+
+        return ColoredBox(
+          color: Theme.of(context).colorScheme.surface,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: FundHomeHeader(
+                  isWide: isWide,
+                  showMenuButton: true,
+                  showBalanceInHeader: balanceInHeader,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: FundLayout.pagePadding(isWide),
+                  child: FundMaxWidthContent(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (!balanceInHeader) ...[
+                          const BalanceCard(),
+                          const SizedBox(height: FundLayout.sectionGap),
+                        ],
+                        const FundsListSection(),
+                        const SizedBox(height: 32),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
