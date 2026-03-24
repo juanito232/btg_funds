@@ -5,18 +5,13 @@ import 'package:flutter_application_1/features/funds/presentation/widgets/dialog
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class FundsScaffoldShell extends ConsumerStatefulWidget {
+class FundsScaffoldShell extends ConsumerWidget {
   const FundsScaffoldShell({super.key, required this.child});
 
   final Widget child;
 
   @override
-  ConsumerState<FundsScaffoldShell> createState() => _FundsScaffoldShellState();
-}
-
-class _FundsScaffoldShellState extends ConsumerState<FundsScaffoldShell> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final actionsState = ref.watch(fundActionsProvider);
 
     ref.listen<FundActionsState>(fundActionsProvider, (previous, next) {
@@ -62,8 +57,8 @@ class _FundsScaffoldShellState extends ConsumerState<FundsScaffoldShell> {
                   child: Text(
                     'BTG Fondos',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -100,7 +95,7 @@ class _FundsScaffoldShellState extends ConsumerState<FundsScaffoldShell> {
       ),
       body: Stack(
         children: [
-          Positioned.fill(child: widget.child),
+          Positioned.fill(child: child),
           if (actionsState.isLoading)
             Positioned.fill(
               child: AbsorbPointer(
@@ -122,8 +117,7 @@ class _FundsScaffoldShellState extends ConsumerState<FundsScaffoldShell> {
                               const SizedBox(height: 16),
                               Text(
                                 'Procesando…',
-                                style:
-                                    Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ],
                           ),

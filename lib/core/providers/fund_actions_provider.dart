@@ -8,16 +8,8 @@ import 'package:flutter_application_1/core/utils/currency_formatter.dart';
 import 'package:flutter_application_1/core/providers/fund_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 final fundActionsProvider =
-    StateNotifierProvider<FundActionsNotifier, FundActionsState>((ref) {
-      final dataSource = ref.watch(localFundDataSourceProvider);
-      return FundActionsNotifier(
-        transactionRepository: TransactionRepositoryImpl(dataSource),
-        balanceRepository: BalanceRepositoryImpl(dataSource),
-        ref: ref,
-      );
-    });
+    NotifierProvider<FundActionsNotifier, FundActionsState>(FundActionsNotifier.new);
 
 class FundActionsState {
   const FundActionsState({
@@ -41,16 +33,15 @@ class FundActionsState {
   );
 }
 
-class FundActionsNotifier extends StateNotifier<FundActionsState> {
-  FundActionsNotifier({
-    required this.transactionRepository,
-    required this.balanceRepository,
-    required this.ref,
-  }) : super(const FundActionsState());
+class FundActionsNotifier extends Notifier<FundActionsState> {
+  TransactionRepository get _transactionRepository =>
+      TransactionRepositoryImpl(ref.read(localFundDataSourceProvider));
 
-  final TransactionRepository transactionRepository;
-  final BalanceRepository balanceRepository;
-  final Ref ref;
+  BalanceRepository get _balanceRepository =>
+      BalanceRepositoryImpl(ref.read(localFundDataSourceProvider));
+
+  @override
+  FundActionsState build() => const FundActionsState();
 
   Future<void> subscribe({
     required String fundId,
@@ -62,7 +53,7 @@ class FundActionsNotifier extends StateNotifier<FundActionsState> {
     state = state.copyWith(isLoading: true, error: null, successMessage: null);
 
     try {
-      final balance = await balanceRepository.getAvailableBalance();
+      final balance = await _balanceRepository.getAvailableBalance();
 
       if (amount < minimumAmount) {
         state = state.copyWith(
@@ -86,7 +77,7 @@ class FundActionsNotifier extends StateNotifier<FundActionsState> {
         return;
       }
 
-      await transactionRepository.subscribe(
+      await _transactionRepository.subscribe(
         fundId: fundId,
         fundName: fundName,
         amount: amount,
@@ -119,7 +110,7 @@ class FundActionsNotifier extends StateNotifier<FundActionsState> {
     state = state.copyWith(isLoading: true, error: null, successMessage: null);
 
     try {
-      await transactionRepository.cancel(
+      await _transactionRepository.cancel(
         fundId: fundId,
         fundName: fundName,
         amount: amount,
